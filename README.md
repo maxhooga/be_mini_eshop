@@ -136,13 +136,50 @@ Without `jq`, drop `| jq` — raw JSON is fine.
 | `make install` | `composer install` |
 | `make dev` | PHP built-in server on `:8000` (`www/`) |
 | `make test` | Nette Tester (`composer tester`) |
+| `make up` | API + Postgres via Docker Compose (`http://localhost:8000`) |
+
+## Deploy
+
+The assignment asks for a public link. This repo deploys as a Docker web service plus Postgres.
+
+On startup the container reads `DATABASE_URL`, applies `migrations/deploy/001_schema.sql` (existing orders are kept), and seeds products when the catalog is empty. `config/local.neon` is not used in the image. If `DATABASE_URL` is set locally, it overrides `local.neon`.
+
+### Render (public URL)
+
+Free tier, no credit card. The free database expires 30 days after creation, which is enough for the review.
+
+1. Push this repository to a public GitHub repo.
+2. Open [Render Blueprints](https://dashboard.render.com/blueprints) → **New Blueprint Instance** → select the repo.
+3. Render reads `render.yaml`, creates the web service and Postgres in Frankfurt, and injects `DATABASE_URL`.
+4. When the deploy is live, send this link:
+
+```text
+https://fapi-orders.onrender.com/api/products
+```
+
+The hostname is on the service page if Render adds a suffix. `GET /api/products` should return the three demo products. Creating an order needs a network call to ČNB, which the service can make.
+
+The free web service sleeps after about 15 minutes. The first request after that can take around a minute.
+
+To allow a browser frontend on another origin, set `CORS_ALLOWED_ORIGINS` to a comma-separated list (for example `https://your-frontend.example`). That list replaces the localhost defaults.
+
+### Same image locally
+
+```bash
+make up
+```
+
+Postgres is published on `localhost:5433` so it does not clash with a database already running on `5432`. The API is `http://localhost:8000`.
 
 ## Project layout (short)
 
 ```
 app/Model/           domain (products, orders, pricing, ČNB)
 app/Presentation/Api JSON presenters
-migrations/structures schema SQL
+migrations/structures schema SQL for a local database
+migrations/deploy    schema applied on every deploy (keeps data)
 seeds/               demo products
 tests/               unit + HTTP presenter tests
+Dockerfile           image used by Render and docker compose
+render.yaml          Render Blueprint (web service + Postgres)
 ```
