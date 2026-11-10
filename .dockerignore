@@ -1,0 +1,10 @@
+.git
+.github
+vendor
+node_modules
+temp/*
+log/*
+config/local.neon
+tests/**/output
+.DS_Store
+*.swp

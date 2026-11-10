@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: fapi
+      POSTGRES_PASSWORD: fapi
+      POSTGRES_DB: fapi_orders
+    ports:
+      - "5433:5432"
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://fapi:fapi@db:5432/fapi_orders
+      PORT: "8000"
+    ports:
+      - "8000:8000"
