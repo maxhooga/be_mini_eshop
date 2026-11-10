@@ -3,6 +3,9 @@ services:
 	cache.storage: Nette\Caching\Storages\FileStorage(%tempDir%)
 
 	-
+		create: App\Core\CorsHeaders(%corsAllowedOrigins%)
+
+	-
 		create: App\Model\Product\ProductRepository
 		autowired: App\Model\Product\ProductRepositoryInterface
 

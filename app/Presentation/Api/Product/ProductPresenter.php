@@ -4,14 +4,14 @@ namespace App\Presentation\Api\Product;
 
 use App\Model\Product\Product;
 use App\Model\Product\ProductRepositoryInterface;
-use Nette;
+use App\Presentation\Api\ApiPresenter;
 
 
 /**
  * JSON API controller for products.
  * GET /api/products → list active products
  */
-final class ProductPresenter extends Nette\Application\UI\Presenter
+final class ProductPresenter extends ApiPresenter
 {
 	public function __construct(
 		private ProductRepositoryInterface $products,
@@ -21,13 +21,15 @@ final class ProductPresenter extends Nette\Application\UI\Presenter
 
 	public function actionDefault(): void
 	{
-		$items = array_map(
-			static fn(Product $product): array => $product->toArray(),
-			$this->products->findAllActive(),
-		);
+		$this->runDomain(function (): void {
+			$this->requireMethod('GET');
 
-		$this->sendJson([
-			'data' => $items,
-		]);
+			$items = array_map(
+				static fn(Product $product): array => $product->toArray(),
+				$this->products->findAllActive(),
+			);
+
+			$this->sendSuccess($items);
+		});
 	}
 }

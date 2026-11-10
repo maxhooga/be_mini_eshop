@@ -3,6 +3,12 @@
 parameters:
 	targetCurrency: EUR
 	cnbRateUrl: 'https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt'
+	# Vite / local frontend origins (override in local.neon if needed)
+	corsAllowedOrigins:
+		- http://localhost:5173
+		- http://127.0.0.1:5173
+		- http://localhost:3000
+		- http://127.0.0.1:3000
 
 
 application:
@@ -13,10 +19,10 @@ application:
 
 
 database:
-	# Local overrides: config/local.neon (gitignored)
+	# Override credentials in config/local.neon (gitignored)
 	dsn: 'pgsql:host=127.0.0.1;dbname=fapi_orders'
-	user: maxhoga
-	password:
+	user: fapi
+	password: fapi
 
 
 latte:

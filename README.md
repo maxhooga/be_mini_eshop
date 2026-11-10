@@ -34,7 +34,9 @@ database:
 	password: your_password
 ```
 
-Defaults in `config/common.neon` point at `fapi_orders` on `127.0.0.1` — override via `local.neon` as needed.
+Defaults in `config/common.neon` are neutral placeholders (`user`/`password`: `fapi` / `fapi`, DB `fapi_orders` on `127.0.0.1`). Put real credentials only in `local.neon`.
+
+CORS allows local Vite origins (`http://localhost:5173`, `:3000`, and `127.0.0.1` variants). Extend `corsAllowedOrigins` in `local.neon` if needed.
 
 ### 3. Schema + seed
 

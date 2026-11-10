@@ -2,6 +2,7 @@
 
 namespace App\Presentation\Api;
 
+use App\Core\CorsHeaders;
 use App\Model\Exception\NotFoundException;
 use App\Model\Exception\ValidationException;
 use Nette;
@@ -14,6 +15,25 @@ use Tracy\ILogger;
 
 abstract class ApiPresenter extends Nette\Application\UI\Presenter
 {
+	/** @var list<string> */
+	public array $allowedMethods = ['GET', 'POST', 'HEAD', 'OPTIONS'];
+
+	private ?CorsHeaders $cors = null;
+
+
+	public function injectCorsHeaders(CorsHeaders $cors): void
+	{
+		$this->cors = $cors;
+	}
+
+
+	protected function startup(): void
+	{
+		parent::startup();
+		$this->cors?->apply($this);
+	}
+
+
 	/** @param mixed $data */
 	protected function sendSuccess(mixed $data, int $code = IResponse::S200_OK): void
 	{
