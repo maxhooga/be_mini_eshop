@@ -1,6 +1,8 @@
 # see https://doc.nette.org/en/configuring
 
 parameters:
+	targetCurrency: EUR
+	cnbRateUrl: 'https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt'
 
 
 application:

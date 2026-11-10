@@ -1,11 +1,34 @@
 services:
 	- App\Core\RouterFactory::createRouter
+	cache.storage: Nette\Caching\Storages\FileStorage(%tempDir%)
+
+	-
+		create: App\Model\Product\ProductRepository
+		autowired: App\Model\Product\ProductRepositoryInterface
+
+	-
+		create: App\Model\Order\OrderRepository
+		autowired: App\Model\Order\OrderRepositoryInterface
+
+	-
+		create: App\Model\Exchange\CnbExchangeRateService(%cnbRateUrl%)
+
+	-
+		create: App\Model\Pricing\PriceCalculator
+
+	orderService:
+		factory: App\Model\Order\OrderService
+		arguments:
+			targetCurrency: %targetCurrency%
 
 
 search:
-	-	in: %appDir%
+	-
+		in: %appDir%
 		classes:
 			- *Facade
 			- *Factory
-			- *Repository
-			- *Service
+		exclude:
+			classes:
+				- App\Model\Order\OrderService
+				- App\Model\Exchange\CnbExchangeRateService
