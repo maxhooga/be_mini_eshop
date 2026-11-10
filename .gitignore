@@ -1,0 +1,16 @@
+# local notes (keep out of GitHub)
+PLAN.md
+
+# Nette / PHP
+/vendor/
+/temp/*
+!/temp/.gitkeep
+/log/*
+!/log/.gitkeep
+/config/local.neon
+.env
+
+# OS / IDE
+.idea/
+.DS_Store
+*.swp
