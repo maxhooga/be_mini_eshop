@@ -8,6 +8,6 @@ fi
 
 php bin/migrate.php
 
-port="${PORT:-8000}"
+port="${PORT:-10000}"
 echo "Listening on 0.0.0.0:${port}"
 exec php -S "0.0.0.0:${port}" -t www www/router.php

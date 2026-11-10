@@ -2,9 +2,14 @@ FROM composer:2 AS vendor
 
 WORKDIR /app
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-interaction --no-scripts --optimize-autoloader
+RUN composer install \
+	--no-dev \
+	--no-interaction \
+	--no-scripts \
+	--optimize-autoloader \
+	--ignore-platform-reqs
 
-FROM php:8.3-cli
+FROM php:8.4-cli
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends libpq-dev \
@@ -20,6 +25,7 @@ RUN mkdir -p temp log \
 	&& chmod -R 777 temp log \
 	&& chmod +x bin/docker-entrypoint.sh
 
-EXPOSE 8000
+ENV PORT=10000
+EXPOSE 10000
 
-ENTRYPOINT ["bin/docker-entrypoint.sh"]
+ENTRYPOINT ["/app/bin/docker-entrypoint.sh"]

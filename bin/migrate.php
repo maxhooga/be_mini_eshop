@@ -31,14 +31,14 @@ fwrite(STDOUT, "Database schema is ready.\n");
 function connectWithRetry(array $database): PDO
 {
 	$last = null;
-	for ($attempt = 1; $attempt <= 15; $attempt++) {
+	for ($attempt = 1; $attempt <= 30; $attempt++) {
 		try {
 			return new PDO($database['dsn'], $database['user'], $database['password'], [
 				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 			]);
 		} catch (PDOException $exception) {
 			$last = $exception;
-			fwrite(STDERR, "Database not ready ({$attempt}/15).\n");
+			fwrite(STDERR, "Database not ready ({$attempt}/30): {$exception->getMessage()}\n");
 			sleep(2);
 		}
 	}
