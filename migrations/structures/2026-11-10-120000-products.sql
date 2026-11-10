@@ -1,0 +1,14 @@
+-- Fresh products catalog (price without VAT in CZK)
+DROP TABLE IF EXISTS order_items;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS products;
+
+CREATE TABLE products (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	description TEXT NULL,
+	price_czk NUMERIC(12, 2) NOT NULL,
+	vat_rate NUMERIC(5, 2) NOT NULL DEFAULT 21.00,
+	is_active BOOLEAN NOT NULL DEFAULT TRUE,
+	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
