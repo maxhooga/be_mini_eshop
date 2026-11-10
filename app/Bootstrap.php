@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Core\DatabaseConfig;
 use Nette;
 use Nette\Bootstrap\Configurator;
 
@@ -49,5 +50,50 @@ class Bootstrap
 		if (is_file($local)) {
 			$this->configurator->addConfig($local);
 		}
+
+		$fromEnv = $this->configFromEnvironment();
+		if ($fromEnv !== []) {
+			$this->configurator->addConfig($fromEnv);
+		}
+	}
+
+
+	/** @return array<string, mixed> */
+	private function configFromEnvironment(): array
+	{
+		$config = [];
+
+		$databaseUrl = self::env('DATABASE_URL');
+		if ($databaseUrl !== null) {
+			$config['database'] = DatabaseConfig::fromUrl($databaseUrl);
+		}
+
+		$origins = self::env('CORS_ALLOWED_ORIGINS');
+		if ($origins !== null) {
+			$list = array_values(array_filter(
+				array_map('trim', explode(',', $origins)),
+				static fn(string $origin): bool => $origin !== '',
+			));
+			if ($list !== []) {
+				$config['parameters']['corsAllowedOrigins'] = $list;
+			}
+		}
+
+		return $config;
+	}
+
+
+	private static function env(string $name): ?string
+	{
+		$value = getenv($name);
+		if (is_string($value) && $value !== '') {
+			return $value;
+		}
+
+		if (isset($_SERVER[$name]) && is_string($_SERVER[$name]) && $_SERVER[$name] !== '') {
+			return $_SERVER[$name];
+		}
+
+		return null;
 	}
 }
