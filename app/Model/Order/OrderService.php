@@ -4,7 +4,7 @@ namespace App\Model\Order;
 
 use App\Model\Exception\NotFoundException;
 use App\Model\Exception\ValidationException;
-use App\Model\Exchange\CnbExchangeRateService;
+use App\Model\Exchange\ExchangeRateProviderInterface;
 use App\Model\Pricing\PriceCalculator;
 use App\Model\Product\ProductRepositoryInterface;
 
@@ -15,7 +15,7 @@ final class OrderService
 		private ProductRepositoryInterface $products,
 		private OrderRepositoryInterface $orders,
 		private PriceCalculator $priceCalculator,
-		private CnbExchangeRateService $cnb,
+		private ExchangeRateProviderInterface $cnb,
 		private string $targetCurrency = 'EUR',
 	) {
 	}

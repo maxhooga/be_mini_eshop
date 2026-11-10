@@ -6,7 +6,7 @@ use Nette\Caching\Cache;
 use Nette\Caching\Storage;
 
 
-final class CnbExchangeRateService
+final class CnbExchangeRateService implements ExchangeRateProviderInterface
 {
 	private Cache $cache;
 

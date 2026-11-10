@@ -12,6 +12,7 @@ services:
 
 	-
 		create: App\Model\Exchange\CnbExchangeRateService(%cnbRateUrl%)
+		autowired: App\Model\Exchange\ExchangeRateProviderInterface
 
 	-
 		create: App\Model\Pricing\PriceCalculator

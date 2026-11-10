@@ -35,7 +35,7 @@
 	},
 	"scripts": {
 		"phpstan": "phpstan analyse",
-		"tester": "tester tests -s"
+		"tester": "php vendor/bin/tester tests -s"
 	},
 	"minimum-stability": "stable",
 	"config": {
